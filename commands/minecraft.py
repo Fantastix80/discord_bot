@@ -12,8 +12,8 @@ class Minecraft(commands.Cog):
 
     @commands.command()
     async def minecraft(self, ctx):
-        print("j'ai été appelé")
         try:
+            # Vérifier si le service Minecraft est actif
             service_status = subprocess.check_output(
                 ["systemctl", "is-active", "minecraft.service"],
                 stderr=subprocess.STDOUT
@@ -22,16 +22,18 @@ class Minecraft(commands.Cog):
             service_status = "unknown"
 
         if service_status != "active":
-            await ctx.reply("🚫 Le serveur Minecraft n'est **pas actif**.")
+            embed = discord.Embed(title="🟢 Serveur Minecraft", color=discord.Color.red())
+            embed.add_field(name="Statut", value="Inactif", inline=False)
+
+            await ctx.reply(embed=embed)
             return
 
-            # Envoyer "list" dans l'écran
+        # Envoyer la commande "list" dans la console du serveur Minecraft
         subprocess.run(['screen', '-S', 'mc', '-p', '0', '-X', 'stuff', 'list\n'])
 
-        # Attendre un peu pour que le serveur réponde
         time.sleep(1)
 
-        # Lire les logs (adapte le chemin si nécessaire)
+        # Puis on récupère la sortie de la commande dans le fichier de log
         log_path = "/sftp/serveur_mc/logs/latest.log"
         if not os.path.exists(log_path):
             await ctx.reply("❗ Impossible de trouver le fichier de log Minecraft.")
@@ -40,7 +42,7 @@ class Minecraft(commands.Cog):
         with open(log_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
 
-        # Trouver la ligne avec la réponse à la commande `list`
+        # Trouver la ligne avec la réponse à la commande "list"
         list_line = None
         for line in reversed(lines):
             if "There are" in line and "players online" in line:
@@ -64,8 +66,8 @@ class Minecraft(commands.Cog):
         # Répondre sur Discord
         embed = discord.Embed(title="🟢 Serveur Minecraft", color=discord.Color.green())
         embed.add_field(name="Statut", value="Actif", inline=False)
-        embed.add_field(name="Joueurs connectés", value=f"{count}", inline=True)
-        embed.add_field(name="Noms", value=players, inline=True)
+        embed.add_field(name="Joueurs connectés", value=f"{count}", inline=False)
+        embed.add_field(name="Noms", value=players, inline=False)
 
         await ctx.reply(embed=embed)
 

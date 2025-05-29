@@ -1,5 +1,4 @@
 from discord.ext import commands
-from config import FORBIDDEN_WORDS
 
 
 class MessageEvents(commands.Cog):
