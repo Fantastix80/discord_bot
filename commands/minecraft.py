@@ -31,7 +31,7 @@ class Minecraft(commands.Cog):
         # Envoyer la commande "list" dans la console du serveur Minecraft
         subprocess.run(['screen', '-S', 'mc', '-p', '0', '-X', 'stuff', 'list\n'])
 
-        time.sleep(1)
+        time.sleep(0.1)
 
         # Puis on récupère la sortie de la commande dans le fichier de log
         log_path = "/sftp/serveur_mc/logs/latest.log"
