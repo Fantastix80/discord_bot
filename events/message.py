@@ -14,7 +14,7 @@ class MessageEvents(commands.Cog):
         if message.content.endswith("quoi"):
             await message.channel.send("feur !")
 
-        await self.bot.process_commands(message)
+        #await self.bot.process_commands(message)
 
 
 async def setup(bot):
