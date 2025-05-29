@@ -23,13 +23,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f"{bot.user.name} est opérationnel!")
     extensions = [
-        "commands.basic",
-        "commands.roles",
-        "commands.messaging",
-        "commands.poll",
-        "commands.secret",
-        "events.ready",
-        "events.member",
+        "commands.help",
         "events.message"
     ]
     for extension in extensions:

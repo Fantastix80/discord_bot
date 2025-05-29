@@ -11,16 +11,9 @@ class MessageEvents(commands.Cog):
         if message.author == self.bot.user:
             return
 
-        # Réponse "feur" à "quoi"
+        # Répondre 'feur !' si le message fini par 'quoi'
         if message.content.endswith("quoi"):
-            await message.channel.send(f"feur !")
-
-        # Modération des mots interdits
-        for word in FORBIDDEN_WORDS:
-            if word in message.content.lower():
-                await message.delete()
-                await message.channel.send(f"{message.author.mention}, pas de grossièretés ici !")
-                break
+            await message.channel.send("feur !")
 
         await self.bot.process_commands(message)
 
