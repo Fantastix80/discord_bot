@@ -23,6 +23,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f"{bot.user.name} est opérationnel!")
     extensions = [
+        "commands.help",
         "commands.minecraft",
         "events.message"
     ]
