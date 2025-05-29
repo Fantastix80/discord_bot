@@ -1,9 +1,12 @@
+import logging
+
 from discord.ext import commands
 import discord
 import subprocess
 import time
 import re
 import os
+import logging
 
 
 class Minecraft(commands.Cog):
@@ -12,6 +15,7 @@ class Minecraft(commands.Cog):
 
     @commands.command()
     async def minecraft(self, ctx):
+        logging.DEBUG("Commande !minecraft exécutée par %s", ctx.author.name)
         try:
             # Vérifier si le service Minecraft est actif
             service_status = subprocess.check_output(
@@ -22,10 +26,10 @@ class Minecraft(commands.Cog):
             service_status = "unknown"
 
         if service_status != "active":
-            embed = discord.Embed(title="🟢 Serveur Minecraft", color=discord.Color.red())
-            embed.add_field(name="Statut", value="Inactif", inline=False)
+            #embed = discord.Embed(title="🟢 Serveur Minecraft", color=discord.Color.red())
+            #embed.add_field(name="Statut", value="Inactif", inline=False)
 
-            await ctx.reply(embed=embed)
+            await ctx.reply(f"serveur inactif")
             return
 
         # Envoyer la commande "list" dans la console du serveur Minecraft
