@@ -22,7 +22,7 @@ class Minecraft(commands.Cog):
             service_status = "unknown"
 
         if service_status != "active":
-            embed = discord.Embed(title="🟢 Serveur Minecraft", color=discord.Color.red())
+            embed = discord.Embed(title="🔴 Serveur Minecraft", color=discord.Color.red())
             embed.add_field(name="Statut", value="Inactif", inline=False)
 
             await ctx.reply(embed=embed)

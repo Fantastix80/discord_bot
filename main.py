@@ -26,6 +26,7 @@ async def on_ready():
     extensions = [
         "commands.help",
         "commands.minecraft",
+        "commands.custom_command",
         "events.message"
     ]
     for extension in extensions:
