@@ -22,13 +22,11 @@ bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 @bot.event
 async def on_ready():
     print(f"{bot.user.name} est opérationnel!")
-    extensions = [
-        "commands.help",
-        "commands.minecraft",
-        "events.message"
-    ]
-    for extension in extensions:
-        await bot.load_extension(extension)
+
+    # Chargement des extensions
+    await bot.load_extension("commands.help")
+    await bot.load_extension("commands.minecraft")
+    await bot.load_extension("events.message")
 
 # Lancement du bot
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
