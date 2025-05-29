@@ -12,6 +12,7 @@ class Minecraft(commands.Cog):
 
     @commands.command()
     async def minecraft(self, ctx):
+        print("j'ai été appelé")
         try:
             service_status = subprocess.check_output(
                 ["systemctl", "is-active", "minecraft.service"],
@@ -21,7 +22,7 @@ class Minecraft(commands.Cog):
             service_status = "unknown"
 
         if service_status != "active":
-            await ctx.send("🚫 Le serveur Minecraft n'est **pas actif**.")
+            await ctx.reply("🚫 Le serveur Minecraft n'est **pas actif**.")
             return
 
             # Envoyer "list" dans l'écran
@@ -33,7 +34,7 @@ class Minecraft(commands.Cog):
         # Lire les logs (adapte le chemin si nécessaire)
         log_path = "/sftp/serveur_mc/logs/latest.log"
         if not os.path.exists(log_path):
-            await ctx.send("❗ Impossible de trouver le fichier de log Minecraft.")
+            await ctx.reply("❗ Impossible de trouver le fichier de log Minecraft.")
             return
 
         with open(log_path, 'r', encoding='utf-8') as f:
@@ -47,7 +48,7 @@ class Minecraft(commands.Cog):
                 break
 
         if not list_line:
-            await ctx.send("⚠️ Impossible de récupérer la liste des joueurs.")
+            await ctx.reply("⚠️ Impossible de récupérer la liste des joueurs.")
             return
 
         # Extraire les infos
@@ -66,7 +67,7 @@ class Minecraft(commands.Cog):
         embed.add_field(name="Joueurs connectés", value=f"{count}", inline=True)
         embed.add_field(name="Noms", value=players, inline=True)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
 
 async def setup(bot):
