@@ -120,6 +120,10 @@ class CustomCommand(commands.Cog):
 
         data = self.commands_data[name]
 
+        if data.get("author") != str(ctx.author):
+            await ctx.reply(f"❌ Tu ne peux pas supprimer cette commande car tu n'en es pas l'auteur.")
+            return
+
         # Supprimer l'image si elle existe
         if data.get("image"):
             image_path = os.path.join(IMAGES_DIR, data["image"])
