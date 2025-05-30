@@ -29,23 +29,29 @@ class CustomCommand(commands.Cog):
             )
             embed.add_field(
                 name="➕ Créer une commande",
-                value="`!command create <nom> <contenu>`\nCrée une commande personnalisée qui peut contenir du texte et/ou une image.",
+                value="`!command create <nom> <contenu>`\nCrée une commande personnalisée avec texte et/ou image.",
                 inline=False
             )
             embed.add_field(
                 name="📜 Lister les commandes",
-                value="`!command list`\nAffiche toutes les commandes personnalisées existantes avec leur auteur.",
+                value="`!command list`\nAffiche toutes les commandes existantes avec leur auteur.",
+                inline=False
+            )
+            embed.add_field(
+                name="❌ Supprimer une commande",
+                value="`!command delete <nom>`\nSupprime la commande personnalisée.",
                 inline=False
             )
             embed.add_field(
                 name="▶️ Utiliser une commande",
-                value="`!command <nom>`\nExécute la commande personnalisée correspondant au nom donné.",
+                value="`!command <nom>`\nExécute la commande personnalisée.",
                 inline=False
             )
             embed.set_footer(text="Tu peux attacher une image lors de la création pour qu'elle soit incluse.")
             await ctx.reply(embed=embed)
             return
 
+        # Exécution d'une commande personnalisée
         if subcommand not in self.commands_data:
             await ctx.reply(f"❌ La commande `{subcommand}` n'existe pas.")
             return
@@ -53,7 +59,8 @@ class CustomCommand(commands.Cog):
         data = self.commands_data[subcommand]
 
         if data.get("text") or data.get("image"):
-            embed = discord.Embed(title=f"!command {subcommand}", description=data.get("text", ""), color=discord.Color.blue())
+            embed = discord.Embed(title=f"!command {subcommand}", description=data.get("text", ""),
+                                  color=discord.Color.blue())
 
             file = None
             if data.get("image"):
@@ -104,6 +111,24 @@ class CustomCommand(commands.Cog):
 
         await ctx.message.delete()
         await ctx.send(f"✅ {ctx.author.mention} - La commande `{name}` a été enregistrée avec succès.")
+
+    @command.command()
+    async def delete(self, ctx, name: str):
+        if name not in self.commands_data:
+            await ctx.reply(f"❌ La commande `{name}` n'existe pas.")
+            return
+
+        data = self.commands_data[name]
+
+        # Supprimer l'image si elle existe
+        if data.get("image"):
+            image_path = os.path.join(IMAGES_DIR, data["image"])
+            if os.path.exists(image_path):
+                os.remove(image_path)
+
+        del self.commands_data[name]
+        self.save_commands()
+        await ctx.reply(f"🗑️ La commande `{name}` a été supprimée avec succès.")
 
     @command.command()
     async def list(self, ctx):
