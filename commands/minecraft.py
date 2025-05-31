@@ -29,7 +29,7 @@ class Minecraft(commands.Cog):
             return
 
         # Envoyer la commande "list" dans la console du serveur Minecraft
-        subprocess.run(['screen', '-S', 'mc', '-p', '0', '-X', 'stuff', 'list\n'])
+        subprocess.run(["screen", "-S", "mc", "-p", "0", "-X", "stuff", "list\n"])
 
         time.sleep(0.1)
 
@@ -39,7 +39,7 @@ class Minecraft(commands.Cog):
             await ctx.reply("❗ Impossible de trouver le fichier de log Minecraft.")
             return
 
-        with open(log_path, 'r', encoding='utf-8') as f:
+        with open(log_path, "r", encoding="utf-8") as f:
             lines = f.readlines()
 
         # Trouver la ligne avec la réponse à la commande "list"
@@ -54,7 +54,7 @@ class Minecraft(commands.Cog):
             return
 
         # Extraire les infos
-        match = re.search(r'There are (\d+) of a max of \d+ players online: (.*)', list_line)
+        match = re.search(r"There are (\d+) of a max of \d+ players online: (.*)", list_line)
         if match:
             count = match.group(1)
             players = match.group(2)
