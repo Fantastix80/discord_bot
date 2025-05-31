@@ -1,5 +1,6 @@
 from discord.ext import commands
 import subprocess
+from config import DISCORD_CHANNEL_ID_CONSOLE_MC
 
 
 class Say(commands.Cog):
@@ -8,6 +9,9 @@ class Say(commands.Cog):
 
     @commands.command()
     async def say(self, ctx, *, message: str):
+        if ctx.channel.id != DISCORD_CHANNEL_ID_CONSOLE_MC:
+            await ctx.reply("❌ Cette commande ne peut être utilisée que dans le salon `minecraft`.")
+            return
         try:
             # Vérifier si le service Minecraft est actif
             service_status = subprocess.check_output(
@@ -18,7 +22,7 @@ class Say(commands.Cog):
             service_status = "unknown"
 
         if service_status != "active":
-            await ctx.reply("❌ La serveur minecraft n'est pas allumé.")
+            await ctx.reply("❌ Le serveur minecraft n'est pas allumé.")
             return
 
         # Envoyer la commande "list" dans la console du serveur Minecraft
@@ -26,7 +30,7 @@ class Say(commands.Cog):
         result = subprocess.run(["screen", "-S", "mc", "-p", "0", "-X", "stuff", minecraft_command], capture_output=True, text=True)
 
         if result.returncode == 0:
-            await ctx.reply("✅ Votre message a bien été envoyé dans le serveur Minecraft.")
+            await ctx.message.delete()
         else:
             await ctx.reply(f"❌ Une erreur est survenue lors de l'envoi de la commande.")
 

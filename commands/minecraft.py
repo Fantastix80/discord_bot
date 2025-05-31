@@ -4,6 +4,7 @@ import subprocess
 import time
 import re
 import os
+from config import LATEST_LOGS_PATH
 
 
 class Minecraft(commands.Cog):
@@ -34,12 +35,11 @@ class Minecraft(commands.Cog):
         time.sleep(0.1)
 
         # Puis on récupère la sortie de la commande dans le fichier de log
-        log_path = "/sftp/serveur_mc/logs/latest.log"
-        if not os.path.exists(log_path):
+        if not os.path.exists(LATEST_LOGS_PATH):
             await ctx.reply("❗ Impossible de trouver le fichier de log Minecraft.")
             return
 
-        with open(log_path, "r", encoding="utf-8") as f:
+        with open(LATEST_LOGS_PATH, "r", encoding="utf-8") as f:
             lines = f.readlines()
 
         # Trouver la ligne avec la réponse à la commande "list"
