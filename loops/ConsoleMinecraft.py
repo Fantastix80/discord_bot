@@ -1,6 +1,4 @@
-import discord
 from discord.ext import commands, tasks
-import asyncio
 import os
 import re
 from config import DISCORD_CHANNEL_ID_CONSOLE_MC, LATEST_LOGS_PATH
@@ -38,6 +36,12 @@ class ConsoleMinecraft(commands.Cog):
                 if match:
                     user, message = match.groups()
                     await channel.send(f"💬 **{user}** : {message}")
+
+                # Extrait le texte entre les <> et le message envoyé par le bot discord
+                match = re.search(r'\[Server\] \s*<(.+?)>\s*(.+)', line)
+                if match:
+                    user, message = match.groups()
+                    await channel.send(f"📢 **{user}** : {message}")
 
     @monitor_log.before_loop
     async def before_monitor_log(self):
