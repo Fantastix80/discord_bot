@@ -22,7 +22,7 @@ class Say(commands.Cog):
             return
 
         # Envoyer la commande "list" dans la console du serveur Minecraft
-        minecraft_command = f"say {message}\n"
+        minecraft_command = f"say <{ctx.author}> {message}\n"
         result = subprocess.run(["screen", "-S", "mc", "-p", "0", "-X", "stuff", minecraft_command], capture_output=True, text=True)
 
         if result.returncode == 0:
