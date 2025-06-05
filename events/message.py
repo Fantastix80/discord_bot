@@ -11,7 +11,7 @@ class MessageEvents(commands.Cog):
             return
 
         # Répondre 'feur !' si le message fini par 'quoi'
-        if message.content.endswith("quoi"):
+        if message.content.lower().endswith("quoi"):
             await message.channel.send("feur !")
 
         #await self.bot.process_commands(message)
